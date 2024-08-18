@@ -1,13 +1,45 @@
-import {app, BrowserWindow, screen} from 'electron';
+import {
+  app,
+  BrowserWindow,
+  ipcMain,
+  IpcMainInvokeEvent,
+  ipcRenderer,
+  screen,
+} from 'electron';
 import * as path from 'path';
 import * as fs from 'fs';
+import SimpleElectronStore from './SimpleElectronStore';
 
 let win: BrowserWindow | null = null;
 const args = process.argv.slice(1),
-  serve = args.some(val => val === '--serve');
+  serve = args.some((val) => val === '--serve');
+
+const dataStore = new SimpleElectronStore();
+ipcMain.handle(
+  'store-get',
+  (event: IpcMainInvokeEvent, store: string, key: string) =>
+    dataStore.get(store, key)
+);
+ipcMain.handle('data-path', (event: IpcMainInvokeEvent) =>
+  dataStore.getUserDataPath()
+);
+
+ipcMain.handle('store-fileinfo', (event: IpcMainInvokeEvent, store: string) =>
+  dataStore.getFileInfo(store)
+);
+ipcMain.handle(
+  'store-delete',
+  (event: IpcMainInvokeEvent, store: string, key: string) =>
+    dataStore.delete(store, key)
+);
+
+ipcMain.handle(
+  'store-set',
+  (event: IpcMainInvokeEvent, store: string, key: string, value: any) =>
+    dataStore.set(store, key, value)
+);
 
 function createWindow(): BrowserWindow {
-
   const size = screen.getPrimaryDisplay().workAreaSize;
 
   // Create the browser window.
@@ -18,7 +50,7 @@ function createWindow(): BrowserWindow {
     height: size.height,
     webPreferences: {
       nodeIntegration: true,
-      allowRunningInsecureContent: (serve),
+      allowRunningInsecureContent: serve,
       contextIsolation: false,
     },
   });
@@ -34,7 +66,7 @@ function createWindow(): BrowserWindow {
     let pathIndex = './index.html';
 
     if (fs.existsSync(path.join(__dirname, '../dist/index.html'))) {
-       // Path when running electron in local folder
+      // Path when running electron in local folder
       pathIndex = '../dist/index.html';
     }
 
@@ -76,7 +108,6 @@ try {
       createWindow();
     }
   });
-
 } catch (e) {
   // Catch Error
   // throw e;

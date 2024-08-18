@@ -5,9 +5,11 @@ import { Injectable } from '@angular/core';
 import { ipcRenderer, webFrame } from 'electron';
 import * as childProcess from 'child_process';
 import * as fs from 'fs';
+import { from, Observable } from 'rxjs';
+import { IFileInfo } from '../../../../../app/IFileInfo';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ElectronService {
   ipcRenderer!: typeof ipcRenderer;
@@ -48,6 +50,27 @@ export class ElectronService {
       // ipcRenderer.invoke can serve many common use cases.
       // https://www.electronjs.org/docs/latest/api/ipc-renderer#ipcrendererinvokechannel-args
     }
+  }
+
+  StoreGetFileInfo(store: string, key: string): Observable<IFileInfo> {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return from(this.ipcRenderer.invoke('store-fileinfo', store, key));
+  }
+  StoreDataPath(): Observable<string> {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return from(this.ipcRenderer.invoke('data-path'));
+  }
+  StoreGet(store: string, key: string): Observable<IFileInfo> {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return from(this.ipcRenderer.invoke('store-get', store, key));
+  }
+  StoreSet(store: string, key: string, value: any): Observable<IFileInfo> {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return from(this.ipcRenderer.invoke('store-set', store, key, value));
+  }
+  StoreDelete(store: string, key: string): Observable<IFileInfo> {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return from(this.ipcRenderer.invoke('store-delete', store, key));
   }
 
   get isElectron(): boolean {
