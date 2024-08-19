@@ -60,15 +60,15 @@ export class ElectronService {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return from(this.ipcRenderer.invoke('data-path'));
   }
-  StoreGet(store: string, key: string): Observable<IFileInfo> {
+  StoreGet(store: string, key: string): Observable<string> {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return from(this.ipcRenderer.invoke('store-get', store, key));
   }
-  StoreSet(store: string, key: string, value: any): Observable<IFileInfo> {
+  StoreSet(store: string, key: string, value: any): Observable<void> {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return from(this.ipcRenderer.invoke('store-set', store, key, value));
   }
-  StoreDelete(store: string, key: string): Observable<IFileInfo> {
+  StoreDelete(store: string, key: string): Observable<void> {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return from(this.ipcRenderer.invoke('store-delete', store, key));
   }

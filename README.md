@@ -120,6 +120,16 @@ YES! You can do it! Just by importing your library in npm dependencies section o
 It will be loaded by electron during build phase and added to your final bundle. \
 Then use your library by importing it in `app/main.ts` file. Quite simple, isn't it?
 
+## adding an angular component
+
+The pattern in this boilerplate is to 
+* have each component in a module with it's own routing
+* use a translate module pipe and strings in assets/en.json for any text displayed to user
+
+This means there are a lot of extra steps beyond the classic "ng generate component"
+see [Creating a new angular component](new-angular-component.md)
+
+
 ## E2E Testing
 
 E2E Test scripts can be found in `e2e` folder.

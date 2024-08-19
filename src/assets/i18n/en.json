@@ -1,12 +1,20 @@
 {
   "PAGES": {
       "HOME": {
-          "TITLE": "App works !",
-          "GO_TO_DETAIL": "Go to Detail"
+          "TITLE": "Home Page"
       },
       "DETAIL": {
-        "TITLE": "Detail page !",
-        "BACK_TO_HOME": "Back to Home"
-    }
+        "TITLE": "Detail Page"
+
+      },
+      "AI_CONFIG": {
+        "TITLE": "AI Configuration"
+
+      }
+  },
+  "LABELS": {
+    "GO_TO_DETAIL": "Detail",
+    "BACK_TO_HOME": "Home",
+    "GO_TO_AICONFIG": "AI Configuration"
   }
 }

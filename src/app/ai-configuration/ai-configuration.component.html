@@ -1,0 +1,60 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <h1 class="title">
+        {{ "PAGES.AI_CONFIG.TITLE" | translate }}
+      </h1>
+      <accordion [isAnimated]="true">
+        <accordion-group [isOpen]="openedAccordian()===0"  (isOpenChange)="$event && openedAccordian.set(0)" heading="Keys">
+          <form>
+            <div class="mb-3">
+              <label for="anthropicKey" class="form-label"
+                >Anthropic API key</label
+              >
+              <input
+                type="text"
+                name="anthropicKeyinput"
+                [ngModel]="anthropicKey()"
+                (ngModelChange)="anthropicKey.set($event)"
+                class="form-control"
+                id="anthropicKey"
+                aria-describedby="keyhelp"
+              />
+              <div id="keyhelp" class="form-text">
+                Authorization key for Anthropic 'Claude' API.
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="openAiKey" class="form-label"
+                >Open AI API key</label
+              >
+              <input
+                type="text"
+                name="openaiKeyinput"
+                [ngModel]="openAiKey()"
+                (ngModelChange)="openAiKey.set($event)"
+                class="form-control"
+                id="openAiKey"
+                aria-describedby="keyhelp"
+              />
+              <div id="keyhelp" class="form-text">
+                Authorization key for Open AI 'Claude' API.
+              </div>
+            </div>
+
+            <button type="submit" (click)="saveOpenAiKey()" class="btn btn-primary">Submit</button>
+          </form>
+
+
+
+        </accordion-group>
+        <accordion-group heading="Future Expansion" [isOpen]="openedAccordian()===1"  (isOpenChange)="$event && openedAccordian.set(1)">
+          <p>Some content</p>
+        </accordion-group>
+        <accordion-group heading="Future Expansion" [isOpen]="openedAccordian()===2"  (isOpenChange)="$event && openedAccordian.set(2)">
+          <p>Some content</p>
+        </accordion-group>
+      </accordion>
+    </div>
+  </div>
+</div>
