@@ -17,6 +17,7 @@ import { DetailModule } from './detail/detail.module';
 import { AppComponent } from './app.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { AiConfigurationModule } from './ai-configuration/ai-configuration.module';
+import { ChatModule } from './chat/chat.module';
 
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>  new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -31,6 +32,7 @@ const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>  new Transl
     SharedModule,
     HomeModule,
     DetailModule,
+    ChatModule,
     AiConfigurationModule,
     AppRoutingModule,
     TranslateModule.forRoot({

@@ -52,6 +52,10 @@ export class ElectronService {
     }
   }
 
+  StoreGetKeys(store: string): Observable<string[]> {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return from(this.ipcRenderer.invoke('store-keys', store));
+  }
   StoreGetFileInfo(store: string, key: string): Observable<IFileInfo> {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return from(this.ipcRenderer.invoke('store-fileinfo', store, key));

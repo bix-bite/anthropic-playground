@@ -4,54 +4,101 @@
       <h1 class="title">
         {{ "PAGES.AI_CONFIG.TITLE" | translate }}
       </h1>
-      <accordion [isAnimated]="true">
-        <accordion-group [isOpen]="openedAccordian()===0"  (isOpenChange)="$event && openedAccordian.set(0)" heading="Keys">
+      <accordion [closeOthers]="true" [isAnimated]="true">
+        <accordion-group [isOpen]="true" heading="Keys">
           <form>
             <div class="mb-3">
-              <label for="anthropicKey" class="form-label"
-                >Anthropic API key</label
+              <label for="apiKey" class="form-label"
+                >API key</label
               >
               <input
                 type="text"
-                name="anthropicKeyinput"
-                [ngModel]="anthropicKey()"
-                (ngModelChange)="anthropicKey.set($event)"
+                name="apiKey"
+                [ngModel]="apiKey()"
+                (ngModelChange)="apiKey.set($event)"
                 class="form-control"
-                id="anthropicKey"
+                id="apiKey"
                 aria-describedby="keyhelp"
               />
               <div id="keyhelp" class="form-text">
-                Authorization key for Anthropic 'Claude' API.
+                LLM API Key
               </div>
             </div>
             <div class="mb-3">
-              <label for="openAiKey" class="form-label"
-                >Open AI API key</label
+              <label for="model" class="form-label"
+                >Model</label
               >
               <input
                 type="text"
-                name="openaiKeyinput"
-                [ngModel]="openAiKey()"
-                (ngModelChange)="openAiKey.set($event)"
+                name="model"
+                [ngModel]="model()"
+                (ngModelChange)="model.set($event)"
                 class="form-control"
-                id="openAiKey"
-                aria-describedby="keyhelp"
+                id="model"
+                aria-describedby="modelhelp"
               />
-              <div id="keyhelp" class="form-text">
-                Authorization key for Open AI 'Claude' API.
+              <div id="modelhelp" class="form-text">
+                Specific Model
               </div>
             </div>
-
-            <button type="submit" (click)="saveOpenAiKey()" class="btn btn-primary">Submit</button>
+            <div class="mb-3">
+              <label for="apiKey" class="form-label"
+                >API key</label
+              >
+              <input
+                type="text"
+                name="modelList"
+                [ngModel]="modelList()"
+                (ngModelChange)="modelList.set($event)"
+                class="form-control"
+                id="modelList"
+                aria-describedby="modelListhelp"
+              />
+              <div id="modelListhelp" class="form-text">
+                CSV list of model names
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="baseUrl" class="form-label"
+                >Base URL</label
+              >
+              <input
+                type="text"
+                name="baseUrl"
+                [ngModel]="baseUrl()"
+                (ngModelChange)="baseUrl.set($event)"
+                class="form-control"
+                id="baseUrl"
+                aria-describedby="baseUrlhelp"
+              />
+              <div id="baseUrlhelp" class="form-text">
+                Base URL for LLM API.
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="systemMessage" class="form-label"
+                >Chat system message</label
+              >
+              <input
+                type="text"
+                name="systemMessage"
+                [ngModel]="systemMessage()"
+                (ngModelChange)="systemMessage.set($event)"
+                class="form-control"
+                id="systemMessage"
+                aria-describedby="systemMessagehelp"
+              />
+              <div id="systemMessagehelp" class="form-text">
+                System message to tell LLM how to behave during chat.
+              </div>
+            </div>
+            <button type="submit" (click)="saveSettings()" class="btn btn-primary">Submit</button>
           </form>
-
-
-
         </accordion-group>
-        <accordion-group heading="Future Expansion" [isOpen]="openedAccordian()===1"  (isOpenChange)="$event && openedAccordian.set(1)">
+        <accordion-group heading="Future Expansion">
           <p>Some content</p>
         </accordion-group>
-        <accordion-group heading="Future Expansion" [isOpen]="openedAccordian()===2"  (isOpenChange)="$event && openedAccordian.set(2)">
+        <accordion-group heading="Future Expansion">
           <p>Some content</p>
         </accordion-group>
       </accordion>

@@ -29,6 +29,11 @@ class SimpleElectronStore {
     return this.userDataPath;
   }
 
+  keys(store: string): string[] {
+    const fi = this.lazyLoad(store);
+    return Object.keys(fi.data);
+  }
+
   get<T>(store: string, key: string): T {
     const fi = this.lazyLoad(store);
     fi.statusList.push('get');

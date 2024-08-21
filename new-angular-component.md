@@ -46,6 +46,8 @@ const routes: Routes = [{
 }];
 ```
 
+add ExampleModule imported into AppModule.  You may need to remove the 'standalone=true' from ExampleComponent
+
 in src\assets\i18n\en.json, add a title at PAGES.EXAMPLE.TITLE
 
 ```json

@@ -15,6 +15,7 @@
   "LABELS": {
     "GO_TO_DETAIL": "Detail",
     "BACK_TO_HOME": "Home",
-    "GO_TO_AICONFIG": "AI Configuration"
+    "GO_TO_AICONFIG": "AI Configuration",
+    "GO_TO_CHAT": "Chat"
   }
 }

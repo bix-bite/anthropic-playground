@@ -1,0 +1,48 @@
+.user {
+  display: flex;
+  justify-content: flex-end;
+
+}
+
+.non-user {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.user-box {
+}
+
+.non-user-box {
+  background-color: black;
+}
+
+.msg-container{
+  width: 100%;
+  display: flex;
+}
+
+.msg-container.right{
+  justify-content: flex-end;
+}
+
+.msg-container.left{
+  justify-content: flex-start
+}
+
+.msg-container.right > .msg{
+    background-color:#CCC;
+    color: black;
+}
+
+.msg-container.left > .msg{
+  background-color:#555;
+  color: white;
+}
+
+.msg{
+  max-width: 80%;
+  border-radius: 10px;
+  margin: 10px;
+  padding: 10px;
+}
+

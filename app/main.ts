@@ -23,7 +23,9 @@ ipcMain.handle(
 ipcMain.handle('data-path', (event: IpcMainInvokeEvent) =>
   dataStore.getUserDataPath()
 );
-
+ipcMain.handle('store-keys', (event: IpcMainInvokeEvent, store: string) =>
+  dataStore.keys(store)
+);
 ipcMain.handle('store-fileinfo', (event: IpcMainInvokeEvent, store: string) =>
   dataStore.getFileInfo(store)
 );
