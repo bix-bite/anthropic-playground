@@ -49,11 +49,12 @@
             id="modelName"
             class="form-select"
             [ngModel]="model()"
-            (change)="setModelName($event.target.value)"
-          >
+            (change)="model.set($event.target.value)"
+
+          ><!-- (change)="setModelName($event.target.value)" -->
             <option></option>
-            <option *ngFor="let model of modelList" [ngValue]="model">
-              {{ model }}
+            <option *ngFor="let modelName of modelList" [value]="modelName">
+              {{ modelName }}
             </option>
           </select>
         </div>
@@ -80,9 +81,9 @@
     </div>
     <div class="col-md-9">
       <div
+        #scroll
         class="row"
         style="
-          height: calc(100vh - 200px) !important;
           max-height: calc(100vh - 200px) !important;
           overflow-y: auto;
         "
@@ -102,15 +103,15 @@
       <div class="row" style="position: fixed; bottom: 0; width: 70%; right: 10px">
         <div class="col">
           <div class="mb-3">
-            <input
-              type="text"
-              name="baseUrl"
+          <textarea
+              rows="2"
+              name="newChatMessage"
               [ngModel]="newChatMessage()"
               (ngModelChange)="newChatMessage.set($event)"
               class="form-control"
               id="baseUrl"
               aria-describedby="baseUrlhelp"
-            />
+            ></textarea>
             <div id="baseUrlhelp" class="form-text">
               Say Something to the AI.
             </div>

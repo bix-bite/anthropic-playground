@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ChatRoutingModule } from './chat-routing.module';
 import { ChatComponent } from './chat.component';
 import { SharedModule } from '../shared/shared.module';
+import { ToastrModule } from 'ngx-toastr';
 
 
 @NgModule({
@@ -12,6 +13,7 @@ import { SharedModule } from '../shared/shared.module';
     CommonModule,
     ChatRoutingModule,
     SharedModule,
+    ToastrModule.forRoot(),
   ]
 })
 export class ChatModule { }

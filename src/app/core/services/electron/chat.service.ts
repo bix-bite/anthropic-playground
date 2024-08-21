@@ -53,6 +53,7 @@ export class ChatService {
   send(message: string) {
     this.initChatIfNeeded();
     this.currentMessages.push({role: 'user', content: message});
+    this.OnMessages.next(this.currentMessages);
     if (this.openAI == undefined) {
       throw new Error('Model has not been created yet.  Call createModel first')
     }
