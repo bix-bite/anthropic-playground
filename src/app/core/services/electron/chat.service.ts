@@ -64,7 +64,7 @@ export class ChatService {
       ];
     }
 
-    this.openAI.chat.completions.create( { messages : this.currentMessages, model: this.modelName}).then(
+    this.openAI.chat.completions.create( { messages : this.currentMessages,  max_tokens: 4096, model: this.modelName}).then(
       (value) => {
         this.currentMessages.push(value.choices[0].message);
         this.OnMessages.next(this.currentMessages);

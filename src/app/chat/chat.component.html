@@ -2,45 +2,6 @@
   <div class="row">
     <div class="col-md-3">
       <div class="row">
-        <div class="col-6">
-          <button
-            type="submit"
-            class="mx-3"
-            (click)="saveChat()"
-            class="btn btn-primary"
-          >
-            Save
-          </button>
-        </div>
-        <div class="col-6">
-          <button
-            type="submit"
-            class="mx-3"
-            (click)="clear()"
-            class="btn btn-primary"
-          >
-            Clear
-          </button>
-        </div>
-        <div class="col-12">
-          <label for="selectSavedChat" class="form-label">Saved Chat</label>
-        </div>
-        <div class="col">
-          <select
-            id="selectSavedChat"
-            class="form-select"
-            (change)="openModel($event.target.value)"
-          >
-            <option></option>
-            <option
-              *ngFor="let savedChat of savedChats()"
-              [ngValue]="savedChat"
-            >
-              {{ savedChat }}
-            </option>
-          </select>
-          {{ modelToOpen() }}
-        </div>
         <div class="col-12">
           <label for="modelName" class="form-label">Model Name</label>
         </div>
@@ -50,8 +11,8 @@
             class="form-select"
             [ngModel]="model()"
             (change)="model.set($event.target.value)"
-
-          ><!-- (change)="setModelName($event.target.value)" -->
+          >
+            <!-- (change)="setModelName($event.target.value)" -->
             <option></option>
             <option *ngFor="let modelName of modelList" [value]="modelName">
               {{ modelName }}
@@ -83,46 +44,149 @@
       <div
         #scroll
         class="row"
-        style="
-          max-height: calc(100vh - 200px) !important;
-          overflow-y: auto;
-        "
+        style="max-height: calc(100vh - 200px) !important; overflow-y: auto"
       >
         <ng-container *ngFor="let message of messages()">
           <div
             class="msg-container"
             [ngClass]="message.role === 'user' ? 'left' : 'right'"
           >
-            <p class="msg">
+            <markdown class="msg">
+              <button
+                *ngIf="message.role !== 'user'"
+                tooltip="Open in full screen markdown viewer"
+                placement="left"
+                type="button"
+                class="btn mx-1 btn-secondary btn-small"
+                (click)="openModal(template, message.content)"
+              >
+                <fa-icon [icon]="faMarker"></fa-icon>
+              </button>
               {{ message.content }}
-            </p>
+            </markdown>
           </div>
         </ng-container>
       </div>
+    </div>
 
-      <div class="row" style="position: fixed; bottom: 0; width: 70%; right: 10px">
-        <div class="col">
-          <div class="mb-3">
-          <textarea
-              rows="2"
-              name="newChatMessage"
-              [ngModel]="newChatMessage()"
-              (ngModelChange)="newChatMessage.set($event)"
-              class="form-control"
-              id="baseUrl"
-              aria-describedby="baseUrlhelp"
-            ></textarea>
-            <div id="baseUrlhelp" class="form-text">
-              Say Something to the AI.
-            </div>
-          </div>
-        </div>
-        <div class="col-auto">
-          <button type="submit" (click)="send()" class="btn btn-primary">
-            >
-          </button>
-        </div>
+  </div>
+  <div
+  class="row"
+  style="position: fixed; bottom: 0; width: 100%; right: 10px"
+>
+  <div class="col-auto">
+    <label for="selectSavedChat" class="form-label">Saved Chats</label>
+  </div>
+  <div class="col-auto pe-0">
+    <select
+      id="selectSavedChat"
+      class="form-select"
+      (change)="openModel($event.target.value)"
+    >
+      <option></option>
+      <option
+        *ngFor="let savedChat of savedChats()"
+        [ngValue]="savedChat"
+      >
+        {{ savedChat }}
+      </option>
+    </select>
+    {{ modelToOpen() }}
+  </div>
+  <div class="col-auto pe-0">
+    <button
+      type="submit"
+      class="mx-3"
+      (click)="openSaveChat(saveDialog)"
+      class="btn btn-primary"
+    >
+      Save
+    </button>
+  </div>
+  <div class="col-auto pe-0">
+    <button
+      type="submit"
+      class="mx-3"
+      (click)="clear()"
+      class="btn btn-primary"
+    >
+      Clear
+    </button>
+  </div>
+  <div class="col pe-0">
+    <div class="mb-3">
+      <textarea
+        rows="2"
+        name="newChatMessage"
+        [ngModel]="newChatMessage()"
+        (ngModelChange)="newChatMessage.set($event)"
+        class="form-control"
+        id="baseUrl"
+        aria-describedby="baseUrlhelp"
+      ></textarea>
+      <div id="baseUrlhelp" class="form-text">
+        Say Something to the AI.
       </div>
     </div>
   </div>
+  <div class="col-auto ps-1">
+    <button type="submit" (click)="send()" class="btn btn-primary">
+      >
+    </button>
+  </div>
 </div>
+</div>
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Markdown</h4>
+    <button
+      type="button"
+      class="btn-close close pull-right"
+      aria-label="Close"
+      (click)="modalRef?.hide()"
+    >
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <markdown>
+      {{ markdownMessage }}
+    </markdown>
+  </div>
+</ng-template>
+
+<ng-template #saveDialog>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Save Chat</h4>
+    <button
+      type="button"
+      class="btn-close close pull-right"
+      aria-label="Close"
+      (click)="modalRef?.hide()"
+    >
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <label for="systemMessage" class="form-label">Chat system message</label>
+    <input
+      type="text"
+      name="saveChatName"
+      [(ngModel)]="saveChatName"
+      class="form-control"
+      id="saveChatName"
+      aria-describedby="saveChatNamehelp"
+    />
+    <div id="saveChatNamehelp" class="form-text">
+      Name to save Chat session
+    </div>
+    <button
+      type="button"
+      class="btn btn-small btn-success-outline"
+      (click)="saveChat() && modalRef?.hide()"
+    >
+      Save
+    </button>
+  </div>
+</ng-template>
