@@ -5,7 +5,7 @@ import { ChatCompletionMessageParam } from 'openai/resources';
 import Shared from '../../../app/shared';
 import { ToastrService } from 'ngx-toastr';
 
-import { faMarker } from '@fortawesome/free-solid-svg-icons';
+import { faMarker, faToolbox } from '@fortawesome/free-solid-svg-icons';
 
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 type alertInfo = { type: string; msg: string };
@@ -19,6 +19,8 @@ export class ChatComponent {
   @ViewChild('scroll', { static: true }) scroll: any;
 
   faMarker = faMarker;
+  faToolbox = faToolbox;
+
   readonly STORE_KEY = 'Saved.Chats';
   alertInfo: alertInfo[] = [];
   shouldSave = false;
@@ -43,9 +45,9 @@ export class ChatComponent {
   newChatMessage = signal('');
   baseUrl = signal<string>('');
   apiKey = signal<string>('');
-  model = signal<string>('');
+  model = signal('');
   systemMessage = signal<string>('');
-  modelToOpen = signal<string>('');
+  chatToOpen = signal<string>('');
   savedChats = signal<string[]>([]);
   modelList: string[] = [];
 
@@ -134,19 +136,12 @@ export class ChatComponent {
       return true;
     }
   }
-  modelNameChanged(target: any) {
-    console.log('setting model name ' + JSON.stringify(target));
-    console.log('setting model name ' + this.model());
-    console.log('setting model name ' + target.value);
-  }
-
-  openModel(name: string) {
-    this.modelToOpen.set(name);
+  openModel() {
     if (this.shouldSave) {
-      this.saveChat();
+      this.saveChat(`$backup_${Shared.formattedNow()}`);
     }
 
-    this.electronService.StoreGet(this.STORE_KEY, name).subscribe((x: any) => {
+    this.electronService.StoreGet(this.STORE_KEY, this.chatToOpen()).subscribe((x: any) => {
       this.clear();
       const sysMsg = x.messages.find(
         (m: ChatCompletionMessageParam) => m.role == 'system'
@@ -162,19 +157,23 @@ export class ChatComponent {
     this.shouldSave = false;
   }
 
+  openMaintenanceDialog(template: TemplateRef<void>) {
+    this.modalRef = this.modalService.show(template, {class: 'modal-lg'});
+  }
+
   openSaveChat(template: TemplateRef<void>) {
     this.saveChatName = Shared.formattedNow();
     this.modalRef = this.modalService.show(template);
   }
 
-  saveChat(): boolean {
+  saveChat(name?: string): boolean {
     const chatFreeze = {
       model: this.model(),
       messages: this.chatService.currentMessages,
     };
     this.shouldSave = false;
     this.electronService
-      .StoreSet(this.STORE_KEY, this.saveChatName, chatFreeze)
+      .StoreSet(this.STORE_KEY, name || this.saveChatName || Shared.formattedNow(), chatFreeze)
       .subscribe(() =>
         this.electronService
           .StoreGetKeys(this.STORE_KEY)

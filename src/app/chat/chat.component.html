@@ -1,46 +1,6 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-md-3">
-      <div class="row">
-        <div class="col-12">
-          <label for="modelName" class="form-label">Model Name</label>
-        </div>
-        <div class="col">
-          <select
-            id="modelName"
-            class="form-select"
-            [ngModel]="model()"
-            (change)="model.set($event.target.value)"
-          >
-            <!-- (change)="setModelName($event.target.value)" -->
-            <option></option>
-            <option *ngFor="let modelName of modelList" [value]="modelName">
-              {{ modelName }}
-            </option>
-          </select>
-        </div>
-      </div>
-      <div class="row">
-        <div class="mb-3">
-          <label for="systemMessage" class="form-label"
-            >Chat system message</label
-          >
-          <textarea
-            rows="4"
-            name="systemMessage"
-            [ngModel]="systemMessage()"
-            (ngModelChange)="systemMessage.set($event)"
-            class="form-control"
-            id="systemMessage"
-            aria-describedby="systemMessagehelp"
-          ></textarea>
-          <div id="systemMessagehelp" class="form-text">
-            System message to tell LLM how to behave during chat.
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-9">
+    <div class="col">
       <div
         #scroll
         class="row"
@@ -58,83 +18,81 @@
                 placement="left"
                 type="button"
                 class="btn mx-1 btn-secondary btn-small"
-                (click)="openModal(template, message.content)"
-              >
-                <fa-icon [icon]="faMarker"></fa-icon>
-              </button>
+                (click)="openModal(template, message.content?.toString() || '')"
+              ></button>
               {{ message.content }}
             </markdown>
           </div>
         </ng-container>
       </div>
     </div>
-
   </div>
-  <div
-  class="row"
-  style="position: fixed; bottom: 0; width: 100%; right: 10px"
->
-  <div class="col-auto">
-    <label for="selectSavedChat" class="form-label">Saved Chats</label>
-  </div>
-  <div class="col-auto pe-0">
-    <select
-      id="selectSavedChat"
-      class="form-select"
-      (change)="openModel($event.target.value)"
-    >
-      <option></option>
-      <option
-        *ngFor="let savedChat of savedChats()"
-        [ngValue]="savedChat"
+  <div class="row" style="position: fixed; bottom: 0; width: 100%; right: 10px">
+    <div class="col-auto pe-0">
+      <button
+        type="submit"
+        class="mx-3"
+        (click)="openMaintenanceDialog(maintenanceDialog)"
+        class="btn btn-primary"
       >
-        {{ savedChat }}
-      </option>
-    </select>
-    {{ modelToOpen() }}
-  </div>
-  <div class="col-auto pe-0">
-    <button
-      type="submit"
-      class="mx-3"
-      (click)="openSaveChat(saveDialog)"
-      class="btn btn-primary"
-    >
-      Save
-    </button>
-  </div>
-  <div class="col-auto pe-0">
-    <button
-      type="submit"
-      class="mx-3"
-      (click)="clear()"
-      class="btn btn-primary"
-    >
-      Clear
-    </button>
-  </div>
-  <div class="col pe-0">
-    <div class="mb-3">
-      <textarea
-        rows="2"
-        name="newChatMessage"
-        [ngModel]="newChatMessage()"
-        (ngModelChange)="newChatMessage.set($event)"
-        class="form-control"
-        id="baseUrl"
-        aria-describedby="baseUrlhelp"
-      ></textarea>
-      <div id="baseUrlhelp" class="form-text">
-        Say Something to the AI.
+        <fa-icon [icon]="faToolbox"></fa-icon>
+      </button>
+    </div>
+
+    <div class="col-auto">
+      <label for="selectSavedChat" class="form-label">Saved Chats</label>
+    </div>
+    <div class="col-auto pe-0">
+      <select
+        id="selectSavedChat"
+        class="form-select"
+        [(ngModel)]="chatToOpen"
+        (change)="openModel()"
+      >
+        <option></option>
+        <option *ngFor="let savedChat of savedChats()" [value]="savedChat">
+          {{ savedChat }}
+        </option>
+      </select>
+    </div>
+    <div class="col-auto pe-0">
+      <button
+        type="submit"
+        class="mx-3"
+        (click)="openSaveChat(saveDialog)"
+        class="btn btn-primary"
+      >
+        Save
+      </button>
+    </div>
+    <div class="col-auto pe-0">
+      <button
+        type="submit"
+        class="mx-3"
+        (click)="clear()"
+        class="btn btn-primary"
+      >
+        Clear
+      </button>
+    </div>
+    <div class="col pe-0">
+      <div class="mb-3">
+        <textarea
+          rows="2"
+          name="newChatMessage"
+          [ngModel]="newChatMessage()"
+          (ngModelChange)="newChatMessage.set($event)"
+          class="form-control"
+          id="baseUrl"
+          aria-describedby="baseUrlhelp"
+        ></textarea>
+        <div id="baseUrlhelp" class="form-text">Say Something to the AI.</div>
       </div>
     </div>
+    <div class="col-auto ps-1">
+      <button type="submit" (click)="send()" class="btn btn-primary">></button>
+    </div>
   </div>
-  <div class="col-auto ps-1">
-    <button type="submit" (click)="send()" class="btn btn-primary">
-      >
-    </button>
-  </div>
-</div>
 </div>
 
 <ng-template #template>
@@ -169,7 +127,7 @@
     </button>
   </div>
   <div class="modal-body">
-    <label for="systemMessage" class="form-label">Chat system message</label>
+    <label for="systemMessage" class="form-label">Chat System save name</label>
     <input
       type="text"
       name="saveChatName"
@@ -178,9 +136,7 @@
       id="saveChatName"
       aria-describedby="saveChatNamehelp"
     />
-    <div id="saveChatNamehelp" class="form-text">
-      Name to save Chat session
-    </div>
+    <div id="saveChatNamehelp" class="form-text">Name to save Chat session</div>
     <button
       type="button"
       class="btn btn-small btn-success-outline"
@@ -188,5 +144,59 @@
     >
       Save
     </button>
+  </div>
+</ng-template>
+
+<ng-template #maintenanceDialog>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Maintenance and Settings</h4>
+    <button
+      type="button"
+      class="btn-close close pull-right"
+      aria-label="Close"
+      (click)="modalRef?.hide()"
+    >
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-5">
+          <ul class="list-group">
+            <li *ngFor="let savedChat of savedChats()" class="list-group-item">
+              {{ savedChat }}
+            </li>
+          </ul>
+        </div>
+        <div class="col-7">
+          <label for="modelName" class="form-label">Model Name</label>
+          <select id="modelName" class="form-select" [(ngModel)]="model">
+            <option></option>
+            <option *ngFor="let modelName of modelList" [ngValue]="modelName">
+              {{ modelName }}
+            </option>
+          </select>
+
+          <div class="mb-3">
+            <label for="systemMessage" class="form-label"
+              >Chat system message</label
+            >
+            <textarea
+              rows="4"
+              name="systemMessage"
+              [ngModel]="systemMessage()"
+              (ngModelChange)="systemMessage.set($event)"
+              class="form-control"
+              id="systemMessage"
+              aria-describedby="systemMessagehelp"
+            ></textarea>
+            <div id="systemMessagehelp" class="form-text">
+              System message to tell LLM how to behave during chat.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </ng-template>
