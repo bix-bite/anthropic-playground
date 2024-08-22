@@ -14,6 +14,7 @@ export class AiConfigurationComponent {
   model = signal<string>('');
   modelList = signal<string>('');
   systemMessage = signal<string>('');
+  dataPath = '';
 
   constructor(private electronService: ElectronService) {
     this.electronService
@@ -28,7 +29,8 @@ export class AiConfigurationComponent {
     this.electronService
       .StoreGet(Shared.keys.STORE, Shared.keys.SYSTEM_MESSAGE)
       .subscribe((x) => this.systemMessage.set(x && x.length > 0 ? x : 'Respond as a casual chat partner' ));
-      this.electronService
+    this.electronService.StoreDataPath().subscribe((x) => this.dataPath = x);
+    this.electronService
       .StoreGet(Shared.keys.STORE, Shared.keys.MODEL_LIST)
       .subscribe((x) => this.modelList.set(x && x.length > 0 ? x : 'Sao10K/L3-70B-Euryale-v2.1,cognitivecomputations/dolphin-2.9.1-llama-3-70b,meta-llama/Meta-Llama-3.1-70B-Instruct' ));
 
