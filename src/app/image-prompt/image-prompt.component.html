@@ -1,0 +1,28 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <div class="mb-3">
+        <textarea
+          rows="2"
+          name="imagePrompt"
+          [ngModel]="imagePrompt()"
+          (ngModelChange)="imagePrompt.set($event)"
+          class="form-control"
+          id="imagePrompt"
+          aria-describedby="imagePrompt"
+        ></textarea>
+        <div id="imagePrompt" class="form-text">Tell the Ai what to make an image of.</div>
+      </div>
+    </div>
+    <div class="col-auto ps-1">
+      <button type="submit" (click)="send()" class="btn btn-primary">></button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <img [src]="imageSrc">
+    </div>
+  </div>
+</div>
+
+

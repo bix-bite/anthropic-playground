@@ -41,6 +41,7 @@ ipcMain.handle(
     dataStore.set(store, key, value)
 );
 
+
 function createWindow(): BrowserWindow {
   const size = screen.getPrimaryDisplay().workAreaSize;
 

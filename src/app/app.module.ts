@@ -19,6 +19,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { AiConfigurationModule } from './ai-configuration/ai-configuration.module';
 import { ChatModule } from './chat/chat.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ImagePromptModule } from './image-prompt/image-prompt.module';
 
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>  new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -35,6 +36,7 @@ const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>  new Transl
     DetailModule,
     ChatModule,
     AiConfigurationModule,
+    ImagePromptModule,
     AppRoutingModule,
     TranslateModule.forRoot({
       loader: {
